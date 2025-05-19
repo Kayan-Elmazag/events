@@ -308,7 +308,7 @@
             
             if (token && userData) {
                 // إذا كان هناك جلسة نشطة، توجيه إلى لوحة التحكم
-                window.location.href = '../index.html';
+                window.location.href = 'index.html';
             }
         }
 
@@ -353,7 +353,7 @@
                         if (data.requiresPasswordChange) {
                             showChangePasswordForm(data.userId);
                         } else {
-                            window.location.href = '../index.html';
+                            window.location.href = 'index.html';
                         }
                     } else {
                         showAlert(loginAlert, data.message || 'بيانات الدخول غير صحيحة', 'danger');
@@ -440,7 +440,7 @@
                     if (data.success) {
                         showAlert(alertElement, 'تم تغيير كلمة المرور بنجاح', 'success');
                         setTimeout(() => {
-                            window.location.href = '../index.html';
+                            window.location.href = 'index.html';
                         }, 2000);
                     } else {
                         showAlert(alertElement, data.message || 'فشل في تغيير كلمة المرور', 'danger');
