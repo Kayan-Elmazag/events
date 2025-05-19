@@ -1,0 +1,110 @@
+/* Footer Styles */
+.main-footer {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  height: var(--footer-height);
+  background: linear-gradient(90deg, var(--dark-color), #2d3142);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  z-index: 1000;
+}
+
+.footer-links {
+  display: flex;
+  gap: 15px;
+}
+
+.footer-links a {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.footer-links a:hover {
+  color: white;
+}
+
+.footer-copyright {
+  font-size: 0.9rem;
+}
+/* تنسيق الفوتر */
+.main-footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #2c3e50;
+  color: white;
+  padding: 10px 0;
+  text-align: center;
+  z-index: 100;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 10px;
+}
+
+.footer-link {
+  color: white;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* تنسيق النافذة المنبثقة */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.7);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 400px;
+  position: relative;
+}
+
+.close {
+  position: absolute;
+  right: 15px;
+  top: 5px;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.btn-call, .btn-whatsapp {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.btn-call {
+  background: #3498db;
+  color: white;
+}
+
+.btn-whatsapp {
+  background: #25D366;
+  color: white;
+}

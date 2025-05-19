@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم | نظام الإدارة</title>
+    
+<!-- SweetAlert2 -->
+<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- Material Icons -->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- الخطوط -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- أيقونات Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+<!-- ملفات النظام -->
+<script src="common.js"></script>
+<script src="auth.js"></script>
+    
+    <style>
+        :root {
+            --primary-color: #4e95ed;
+            --primary-dark: #3a7ac4;
+            --secondary-color: #56dbc1;
+            --accent-color: #4cd6ff;
+            --dark-color: #f0f8ff;
+            --light-color: #ffffff;
+            --gray-color: #8ca0b3;
+            --sidebar-width: 300px;
+            --header-height: 70px;
+            --footer-height: 50px;
+            --border-radius: 8px;
+            --box-shadow: 0 2px 20px rgba(66, 153, 225, 0.15);
+            --transition: all 0.5s ease;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        body {
+            background-color: #f0f9ff;
+            color: #2d3748;
+            direction: rtl;
+            min-height: 100vh;
+        }
+        
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e6f7ff 100%);
+        }
+        
+        .app-header {
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            color: #2d3748;
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: var(--box-shadow);
+            border-bottom: 1px solid rgba(66, 153, 225, 0.2);
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            font-weight: bold;
+            font-size: 1.4rem;
+            background: linear-gradient(90deg, var(--accent-color), var(--primary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+        }
+        
+        .mobile-menu-btn {
+            padding: 8px;
+            background: transparent;
+            border: 1px solid rgba(66, 153, 225, 0.3);
+            border-radius: var(--border-radius);
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: none;
+            transition: var(--transition);
+        }
+        
+        .mobile-menu-btn:hover {
+            background: rgba(66, 153, 225, 0.1);
+            transform: rotate(90deg);
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+            padding: 5px 10px;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        
+        .user-profile:hover {
+            background: rgba(66, 153, 225, 0.1);
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .user-name {
+            margin-right: 10px;
+            font-size: 0.95rem;
+            color: #2d3748;
+        }
+        
+        .user-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            min-width: 200px;
+            box-shadow: var(--box-shadow);
+            border-radius: var(--border-radius);
+            padding: 10px 0;
+            display: none;
+            z-index: 1001;
+            border: 1px solid rgba(66, 153, 225, 0.2);
+        }
+        
+        .user-profile:hover .user-dropdown {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .dropdown-item {
+            padding: 10px 20px;
+            color: #4a5568;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition);
+        }
+        
+        .dropdown-item:hover {
+            color: var(--primary-color);
+            background: rgba(66, 153, 225, 0.1);
+        }
+        
+        .dropdown-divider {
+            height: 1px;
+            background: rgba(66, 153, 225, 0.2);
+            margin: 8px 0;
+        }
+        
+        .app-sidebar {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            width: var(--sidebar-width);
+            position: fixed;
+            top: var(--header-height);
+            right: 0;
+            bottom: var(--footer-height);
+            overflow-y: auto;
+            transition: var(--transition);
+            z-index: 999;
+            border-left: 1px solid rgba(66, 153, 225, 0.2);
+            box-shadow: var(--box-shadow);
+            padding: 20px 0;
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .menu-title {
+            padding: 12px 25px;
+            color: #718096;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 15px;
+        }
+        
+        .menu-item {
+            position: relative;
+        }
+        
+        .section-btn {
+            width: 100%;
+            padding: 12px 25px;
+            text-transform: uppercase;
+            border-radius: 0;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #718096;
+            background: transparent;
+            cursor: pointer;
+            border: none;
+            border-right: 3px solid transparent;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-align: right;
+        }
+        
+        .section-btn:hover,
+        .section-btn:focus {
+            color: var(--primary-color);
+            background: rgba(66, 153, 225, 0.1);
+        }
+        
+        .section-btn.active {
+            color: var(--primary-color);
+            background: rgba(66, 153, 225, 0.15);
+            border-right-color: var(--primary-color);
+        }
+        
+        .section-btn .material-icons {
+            font-size: 1.3rem;
+        }
+        
+        .submenu {
+            list-style: none;
+            padding-right: 0;
+            display: none;
+            background: rgba(240, 249, 255, 0.7);
+            border-right: 3px solid var(--primary-color);
+        }
+        
+        .submenu.active {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+        
+        @keyframes slideDown {
+            from { opacity: 0; max-height: 0; }
+            to { opacity: 1; max-height: 500px; }
+        }
+        
+        .submenu .menu-link {
+            padding: 12px 25px 12px 40px;
+            font-size: 0.85rem;
+            color: #4a5568;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .submenu .menu-link:hover {
+            color: var(--primary-color);
+            background: rgba(66, 153, 225, 0.1);
+        }
+        
+        .submenu .menu-link.active {
+            color: var(--primary-color);
+            background: rgba(66, 153, 225, 0.15);
+        }
+        
+        .submenu .menu-link::before {
+            content: "";
+            position: absolute;
+            right: 20px;
+            width: 5px;
+            height: 5px;
+            background: #a0aec0;
+            border-radius: 50%;
+        }
+        
+        .submenu .menu-link:hover::before {
+            background: var(--primary-color);
+            box-shadow: 0 0 5px var(--primary-color);
+        }
+        
+        .app-main {
+            margin-right: var(--sidebar-width);
+            margin-top: var(--header-height);
+            margin-bottom: var(--footer-height);
+            padding: 25px;
+            transition: var(--transition);
+            min-height: calc(100vh - var(--header-height) - var(--footer-height));
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(66, 153, 225, 0.2);
+        }
+        
+        .page-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .breadcrumb {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            font-size: 0.9rem;
+            align-items: center;
+        }
+        
+        .breadcrumb-item {
+            margin-left: 10px;
+            position: relative;
+        }
+        
+        .breadcrumb-item a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: var(--transition);
+            padding: 5px;
+            border-radius: 4px;
+        }
+        
+        .breadcrumb-item a:hover {
+            background: rgba(66, 153, 225, 0.1);
+        }
+        
+        .breadcrumb-item.active {
+            color: #718096;
+        }
+        
+        .breadcrumb-item + .breadcrumb-item::before {
+            content: "/";
+            margin-right: 10px;
+            color: #a0aec0;
+        }
+        
+        .app-footer {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            height: var(--footer-height);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            position: fixed;
+            bottom: 0;
+            right: var(--sidebar-width);
+            left: 0;
+            z-index: 1000;
+            transition: var(--transition);
+            font-size: 0.8rem;
+            color: #718096;
+            border-top: 1px solid rgba(66, 153, 225, 0.2);
+        }
+        
+        @media (max-width: 992px) {
+            .app-sidebar {
+                transform: translateX(100%);
+                width: 280px;
+            }
+            
+            .app-sidebar.mobile-show {
+                transform: translateX(0);
+            }
+            
+            .app-main, .app-footer {
+                margin-right: 0;
+            }
+            
+            .mobile-menu-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .breadcrumb {
+                margin-top: 5px;
+                flex-wrap: wrap;
+                gap: 5px;
+            }
+            
+            .breadcrumb-item + .breadcrumb-item::before {
+                display: none;
+            }
+            
+            .app-header {
+                padding: 0 15px;
+            }
+            
+            .app-main {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- الهيدر -->
+        <header class="app-header">
+            <div class="header-left">
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="material-icons">menu</i>
+                </button>
+                <div class="logo" id="companyLogo">
+                    نظام الإدارة
+                </div>
+            </div>
+            
+            <div class="header-right">
+                <div class="user-profile" id="userProfile">
+                    <div class="user-avatar" id="userAvatar">م</div>
+                    <div class="user-name" id="userName">مدير النظام</div>
+                    <i class="material-icons">arrow_drop_down</i>
+                    
+                    <div class="user-dropdown">
+                        <a href="profile.html" class="dropdown-item">
+                            <i class="material-icons">person</i> الملف الشخصي
+                        </a>
+                        <a href="settings.html" class="dropdown-item">
+                            <i class="material-icons">settings</i> الإعدادات
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item" id="logoutLink">
+                            <i class="material-icons">logout</i> تسجيل الخروج
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <!-- السايدبار المحسن -->
+        <aside class="app-sidebar" id="appSidebar">
+            <ul class="sidebar-menu">
+                <li class="menu-title">القائمة الرئيسية</li>
+                
+                <li class="menu-item">
+                    <a href="main-dashboard.html" class="section-btn active">
+                        <i class="material-icons">dashboard</i>
+                        لوحة التحكم
+                    </a>
+                </li>
+                
+                <!-- قسم المعاملات اليومية -->
+                <li class="menu-item">
+                    <button class="section-btn" id="dailyTransactionsBtn">
+                        <i class="material-icons">receipt</i>
+                        المعاملات اليومية
+                    </button>
+                    <ul class="submenu" id="dailyTransactionsMenu">
+                        <li class="menu-item">
+                            <a href="sections/daily-transactions/dashboard.html" class="menu-link">
+                                لوحة التحكم
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="sections/daily-transactions/add-transaction.html" class="menu-link">
+                                إضافة معاملة
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="sections/daily-transactions/transactions-list.html" class="menu-link">
+                                سجلات المعاملات
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="sections/daily-transactions/edited-transactions.html" class="menu-link">
+                                السجلات المعدلة
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="sections/daily-transactions/reports.html" class="menu-link">
+                                تقارير الإيرادات
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                
+                <!-- قسم الموظفين -->
+                <li class="menu-item">
+                    <button class="section-btn" id="employeesBtn">
+                        <i class="material-icons">people</i>
+                        الموظفين
+                    </button>
+                    <ul class="submenu" id="employeesMenu">
+                        <li class="menu-item">
+                            <a href="sections/employees/dashboard.html" class="menu-link">
+                                لوحة التحكم
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="sections/employees/add-employee.html" class="menu-link">
+                                إضافة موظف
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="sections/employees/employee-of-the-month.html" class="menu-link">
+                                موظف الشهر
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="sections/employees/transactions.html" class="menu-link">
+                                معاملات الموظفين
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="sections/employees/end-of-service.html" class="menu-link">
+                                نهاية الخدمة
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                
+                <!-- قسم المستخدمين -->
+                <li class="menu-item">
+                    <button class="section-btn" id="usersBtn">
+                        <i class="material-icons">manage_accounts</i>
+                        المستخدمون
+                    </button>
+                    <ul class="submenu" id="usersMenu">
+                        <li class="menu-item">
+                            <a href="sections/users/add-user.html" class="menu-link">
+                                إضافة مستخدم
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="sections/users/users-list.html" class="menu-link">
+                                قائمة المستخدمين
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </aside>
+        
+        <!-- المحتوى الرئيسي -->
+        <main class="app-main">
+            <div class="page-header">
+                <h1 class="page-title">لوحة التحكم الرئيسية</h1>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item active">الرئيسية</li>
+                </ul>
+            </div>
+            
+            <!-- مساحة المحتوى الديناميكي -->
+            <div id="dynamicContent">
+                <!-- سيتم تحميل المحتوى هنا -->
+                <div style="display: flex; justify-content: center; align-items: center; height: 60vh;">
+                    <div style="text-align: center;">
+                        <i class="material-icons" style="font-size: 5rem; color: var(--primary-color); opacity: 0.7;">dashboard</i>
+                        <h2 style="color: #4a5568; margin-top: 20px;">مرحبًا بك في لوحة التحكم</h2>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <!-- الفوتر -->
+        <footer class="app-footer">
+            <div>
+                <span id="copyrightText">© <script>document.write(new Date().getFullYear())</script> نظام الإدارة. جميع الحقوق محفوظة.</span>
+            </div>
+            <div>
+                <span id="versionText">الإصدار <script>document.write(window.DevCompany?.developerInfo?.version || '1.0.0')</script></span>
+            </div>
+        </footer>
+    </div>
+    
+    <!-- JavaScript -->
+    <script>
+        // التحقق من الجلسة عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            // 1. التحقق من وجود جلسة نشطة
+            checkSession();
+            
+            // 2. تحميل بيانات المستخدم
+            loadUserData();
+            
+            // 3. إعداد عناصر الواجهة
+            setupUI();
+            
+            // 4. تحديد الصفحة النشطة بناء على الرابط الحالي
+            setActivePage();
+            
+            // 5. إدارة القوائم المنسدلة
+            setupDropdownMenus();
+            
+            // 6. تحديث معلومات الفوتر
+            updateFooterInfo();
+        });
+        
+        // دالة التحقق من الجلسة
+        function checkSession() {
+            const token = localStorage.getItem('sessionToken');
+            const userData = localStorage.getItem('userData');
+            
+            if (!token || !userData) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // التحقق من صلاحية التوكن إذا كان متاحاً
+            if (typeof verifyUserSession === 'function') {
+                verifyUserSession(token).then(isValid => {
+                    if (!isValid) {
+                        logout();
+                    }
+                });
+            }
+        }
+        
+        // دالة تحميل بيانات المستخدم
+        function loadUserData() {
+            try {
+                const userData = JSON.parse(localStorage.getItem('userData')) || {};
+                
+                // عرض اسم المستخدم
+                const userNameElement = document.getElementById('userName');
+                if (userNameElement && userData.fullName) {
+                    userNameElement.textContent = userData.fullName;
+                }
+                
+                // عرض الأحرف الأولى من الاسم
+                const avatarElement = document.getElementById('userAvatar');
+                if (avatarElement && userData.fullName) {
+                    const names = userData.fullName.split(' ');
+                    let initials = names[0].charAt(0);
+                    if (names.length > 1) initials += names[1].charAt(0);
+                    avatarElement.textContent = initials || 'م';
+                }
+                
+                // عرض اسم الشركة إذا كان متاحاً
+                const companyLogoElement = document.getElementById('companyLogo');
+                if (companyLogoElement && window.ClientInfo?.companyName) {
+                    companyLogoElement.textContent = window.ClientInfo.companyName;
+                }
+            } catch (error) {
+                console.error('Error loading user data:', error);
+            }
+        }
+        
+        // دالة إعداد عناصر الواجهة
+        function setupUI() {
+            // زر القائمة للموبايل
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const appSidebar = document.getElementById('appSidebar');
+            
+            if (mobileMenuBtn && appSidebar) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    appSidebar.classList.toggle('mobile-show');
+                    
+                    // إضافة/إزالة طبقة التعتيم
+                    const overlay = document.querySelector('.sidebar-overlay');
+                    if (appSidebar.classList.contains('mobile-show')) {
+                        if (!overlay) {
+                            const newOverlay = document.createElement('div');
+                            newOverlay.className = 'sidebar-overlay';
+                            document.body.appendChild(newOverlay);
+                            
+                            newOverlay.addEventListener('click', function() {
+                                appSidebar.classList.remove('mobile-show');
+                                this.remove();
+                            });
+                        }
+                    } else {
+                        if (overlay) overlay.remove();
+                    }
+                });
+            }
+            
+            // تسجيل الخروج
+            const logoutLink = document.getElementById('logoutLink');
+            if (logoutLink) {
+                logoutLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    logout();
+                });
+            }
+        }
+        
+        // دالة إدارة القوائم المنسدلة
+        function setupDropdownMenus() {
+            // أزرار الأقسام
+            const menuButtons = [
+                { btnId: 'dailyTransactionsBtn', menuId: 'dailyTransactionsMenu' },
+                { btnId: 'employeesBtn', menuId: 'employeesMenu' },
+                { btnId: 'usersBtn', menuId: 'usersMenu' }
+            ];
+            
+            menuButtons.forEach(({ btnId, menuId }) => {
+                const btn = document.getElementById(btnId);
+                const menu = document.getElementById(menuId);
+                
+                if (btn && menu) {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        toggleMenu(menu, menuButtons.filter(m => m.menuId !== menuId).map(m => m.menuId));
+                    });
+                }
+            });
+            
+            // إغلاق القوائم عند النقر خارجها
+            document.addEventListener('click', function() {
+                menuButtons.forEach(({ menuId }) => {
+                    const menu = document.getElementById(menuId);
+                    if (menu) menu.classList.remove('active');
+                });
+            });
+        }
+        
+        // دالة تبديل القوائم
+        function toggleMenu(menuToShow, menusToHideIds) {
+            if (!menuToShow) return;
+            
+            menuToShow.classList.toggle('active');
+            
+            // إخفاء القوائم الأخرى
+            menusToHideIds.forEach(menuId => {
+                const menu = document.getElementById(menuId);
+                if (menu) menu.classList.remove('active');
+            });
+            
+            // تحديث حالة الزر
+            const btn = menuToShow.previousElementSibling;
+            if (btn) {
+                btn.classList.toggle('active', menuToShow.classList.contains('active'));
+            }
+        }
+        
+        // دالة تحديد الصفحة النشطة
+        function setActivePage() {
+            const currentPath = window.location.pathname.split('/').pop() || 'main-dashboard.html';
+            const allLinks = document.querySelectorAll('.menu-link, .section-btn[href]');
+            
+            // إزالة التنشيط من جميع العناصر
+            allLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // البحث عن الرابط المطابق
+            let foundActive = false;
+            for (let link of allLinks) {
+                if (link.href) {
+                    const linkPath = new URL(link.href).pathname.split('/').pop();
+                    
+                    if (linkPath === currentPath) {
+                        link.classList.add('active');
+                        foundActive = true;
+                        
+                        // إذا كان الرابط في قائمة فرعية، نفتح القائمة الأم
+                        const parentMenu = link.closest('.submenu');
+                        if (parentMenu) {
+                            parentMenu.classList.add('active');
+                            const btn = parentMenu.previousElementSibling;
+                            if (btn) btn.classList.add('active');
+                        }
+                        
+                        break;
+                    }
+                }
+            }
+            
+            // إذا لم يتم العثور على رابط مطابق، ننشط لوحة التحكم الرئيسية
+            if (!foundActive && currentPath === 'main-dashboard.html') {
+                const dashboardLink = document.querySelector('.section-btn[href="main-dashboard.html"]');
+                if (dashboardLink) dashboardLink.classList.add('active');
+            }
+        }
+        
+        // دالة تحديث معلومات الفوتر
+        function updateFooterInfo() {
+            // تحديث سنة حقوق النشر
+            const copyrightElement = document.getElementById('copyrightText');
+            if (copyrightElement) {
+                copyrightElement.textContent = `© ${new Date().getFullYear()} ${window.ClientInfo?.companyName || 'نظام الإدارة'}. جميع الحقوق محفوظة.`;
+            }
+            
+            // تحديث إصدار التطبيق
+            const versionElement = document.getElementById('versionText');
+            if (versionElement) {
+                versionElement.textContent = `الإصدار ${window.DevCompany?.developerInfo?.version || '1.0.0'}`;
+            }
+        }
+        
+// دالة تسجيل الخروج
+function logout() {
+  if (typeof AuthSystem !== 'undefined' && typeof AuthSystem.logout === 'function') {
+    AuthSystem.logout();
+  } else {
+    // Fallback إذا لم يكن AuthSystem متاحاً
+    localStorage.removeItem('sessionToken');
+    localStorage.removeItem('userData');
+    window.location.href = 'login.html';
+  }
+}
+
+    </script>
+</body>
+</html>

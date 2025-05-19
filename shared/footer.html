@@ -1,0 +1,24 @@
+<footer class="main-footer">
+  <div class="footer-content">
+    <div class="footer-links">
+      <button onclick="showSupportModal()" class="footer-link">
+        <i class='bx bx-headphone'></i> الدعم الفني
+      </button>
+    <p class="footer-copyright">© 2025 جميع الحقوق محفوظة</p>
+  </div>
+
+  <!-- نافذة الدعم الفني -->
+  <div id="supportModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h3>الدعم الفني</h3>
+      <p>للتواصل مع الدعم الفني:</p>
+      <button onclick="callSupport()" class="btn-call">
+        <i class='bx bx-phone'></i> اتصل بنا: 0123456789
+      </button>
+      <button onclick="openWhatsApp()" class="btn-whatsapp">
+        <i class='bx bxl-whatsapp'></i> واتساب
+      </button>
+    </div>
+  </div>
+</footer>

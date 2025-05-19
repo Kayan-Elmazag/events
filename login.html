@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام الإدارة - تسجيل الدخول</title>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --danger-color: #e74c3c;
+            --dark-color: #2c3e50;
+            --light-color: #ecf0f1;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Tajawal', Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+        }
+        
+        .login-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .login-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .login-header h2 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .login-header p {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        
+        .login-body {
+            padding: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: var(--dark-color);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary-color);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #27ae60;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger-color);
+        }
+        
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+        
+        .text-center {
+            text-align: center;
+        }
+        
+        .mt-3 {
+            margin-top: 15px;
+        }
+        
+        .mb-3 {
+            margin-bottom: 15px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .alert {
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .forgot-password {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 14px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .logo img {
+            max-width: 150px;
+            max-height: 80px;
+        }
+        
+        @media (max-width: 480px) {
+            .login-card {
+                border-radius: 0;
+            }
+            
+            .container {
+                padding: 0;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="login-card">
+            <div class="login-header">
+                <h2>تسجيل الدخول</h2>
+                <p>الرجاء إدخال بيانات الدخول الخاصة بك</p>
+            </div>
+            
+            <div class="login-body">
+                <!-- نموذج تسجيل الدخول -->
+                <form id="loginForm" class="form-login">
+                    <div id="loginAlert" class="alert alert-danger hidden"></div>
+                    
+                    <div class="form-group">
+                        <label for="username">اسم المستخدم</label>
+                        <input type="text" id="username" class="form-control" required autocomplete="username">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">كلمة المرور</label>
+                        <input type="password" id="password" class="form-control" required autocomplete="current-password">
+                    </div>
+                    
+                    <button type="submit" class="btn">تسجيل الدخول</button>
+                    
+                    <div class="text-center mt-3">
+                        <a href="#" class="forgot-password" id="forgotPasswordLink">نسيت كلمة المرور؟</a>
+                    </div>
+                </form>
+                
+                <!-- نموذج استعادة كلمة المرور -->
+                <form id="forgotPasswordForm" class="form-forgot-password hidden">
+                    <div id="forgotPasswordAlert" class="alert hidden"></div>
+                    
+                    <div class="form-group">
+                        <label for="forgotUsername">اسم المستخدم</label>
+                        <input type="text" id="forgotUsername" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="securityAnswer">إجابة سؤال الأمان</label>
+                        <input type="text" id="securityAnswer" class="form-control" required>
+                        <small class="text-muted">سيتم إرسال كلمة مرور مؤقتة بعد التحقق من الإجابة</small>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-secondary">استعادة كلمة المرور</button>
+                    
+                    <div class="text-center mt-3">
+                        <a href="#" class="forgot-password" id="backToLoginLink">العودة لتسجيل الدخول</a>
+                    </div>
+                </form>
+                
+                <!-- نموذج تغيير كلمة المرور (بعد أول دخول) -->
+                <form id="changePasswordForm" class="form-change-password hidden">
+                    <div id="changePasswordAlert" class="alert hidden"></div>
+                    
+                    <input type="hidden" id="userId">
+                    
+                    <div class="form-group">
+                        <label for="currentPassword">كلمة المرور الحالية</label>
+                        <input type="password" id="currentPassword" class="form-control" required>
+                        <small class="text-muted">استخدم كلمة المرور المؤقتة التي حصلت عليها</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="newPassword">كلمة المرور الجديدة</label>
+                        <input type="password" id="newPassword" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirmPassword">تأكيد كلمة المرور الجديدة</label>
+                        <input type="password" id="confirmPassword" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="changeSecurityAnswer">إجابة سؤال الأمان</label>
+                        <input type="text" id="changeSecurityAnswer" class="form-control" required>
+                        <small class="text-muted">للاستخدام في حالة نسيان كلمة المرور لاحقاً</small>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-secondary">تغيير كلمة المرور</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ملف JavaScript المنفصل -->
+    <script>
+        // ==============================================
+        // تهيئة النظام عند تحميل الصفحة
+        // ==============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            // التحقق من وجود بيانات الجلسة (إذا كان المستخدم مسجل دخول بالفعل)
+            checkExistingSession();
+            
+            // تهيئة أحداث النماذج
+            setupLoginForm();
+            setupForgotPasswordForm();
+            setupChangePasswordForm();
+            
+            // تهيئة روابط التبديل بين النماذج
+            setupFormLinks();
+        });
+
+        // ==============================================
+        // الدوال الأساسية
+        // ==============================================
+
+        /**
+         * التحقق من وجود جلسة نشطة
+         */
+        function checkExistingSession() {
+            const token = localStorage.getItem('sessionToken');
+            const userData = localStorage.getItem('userData');
+            
+            if (token && userData) {
+                // إذا كان هناك جلسة نشطة، توجيه إلى لوحة التحكم
+                window.location.href = '../index.html';
+            }
+        }
+
+        /**
+         * تهيئة نموذج تسجيل الدخول
+         */
+        function setupLoginForm() {
+            const loginForm = document.getElementById('loginForm');
+            if (!loginForm) return;
+            
+            loginForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                const loginAlert = document.getElementById('loginAlert');
+                
+                try {
+                    // استخدام بيانات النشر من الملف المشترك إذا كان متاحاً
+                    const scriptUrl = window.DevCompany?.googleSheets?.formUrls?.loginForm || 
+                                    'https://script.google.com/macros/s/AKfycbwt0BQG5zq4WHOPMbKdEpMgQuWTOUnheDxp9RBZJYd8G4WaNxlbR34CfFiIKypV6P6w/exec';
+                    
+                    const response = await fetch(`${scriptUrl}?action=login&username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`);
+                    
+                    if (!response.ok) {
+                        throw new Error('فشل في الاتصال بالخادم');
+                    }
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        // حفظ بيانات الجلسة
+                        localStorage.setItem('sessionToken', data.token);
+                        localStorage.setItem('userData', JSON.stringify({
+                            userId: data.userId,
+                            username: data.username,
+                            fullName: data.fullName,
+                            role: data.role
+                        }));
+                        
+                        // توجيه المستخدم
+                        if (data.requiresPasswordChange) {
+                            showChangePasswordForm(data.userId);
+                        } else {
+                            window.location.href = '../index.html';
+                        }
+                    } else {
+                        showAlert(loginAlert, data.message || 'بيانات الدخول غير صحيحة', 'danger');
+                    }
+                } catch (error) {
+                    console.error('Login error:', error);
+                    showAlert(loginAlert, 'حدث خطأ أثناء محاولة الدخول: ' + error.message, 'danger');
+                }
+            });
+        }
+
+        /**
+         * تهيئة نموذج استعادة كلمة المرور
+         */
+        function setupForgotPasswordForm() {
+            const form = document.getElementById('forgotPasswordForm');
+            if (!form) return;
+            
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const username = document.getElementById('forgotUsername').value;
+                const securityAnswer = document.getElementById('securityAnswer').value;
+                const alertElement = document.getElementById('forgotPasswordAlert');
+                
+                try {
+                    const scriptUrl = window.DevCompany?.googleSheets?.formUrls?.loginForm || 
+                                    'https://script.google.com/macros/s/AKfycbwt0BQG5zq4WHOPMbKdEpMgQuWTOUnheDxp9RBZJYd8G4WaNxlbR34CfFiIKypV6P6w/exec';
+                    
+                    const response = await fetch(`${scriptUrl}?action=resetPassword&username=${encodeURIComponent(username)}&securityAnswer=${encodeURIComponent(securityAnswer)}`);
+                    
+                    if (!response.ok) {
+                        throw new Error('فشل في الاتصال بالخادم');
+                    }
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        showAlert(alertElement, `تم إرسال كلمة مرور مؤقتة: ${data.tempPassword}`, 'success');
+                    } else {
+                        showAlert(alertElement, data.message || 'فشل في استعادة كلمة المرور', 'danger');
+                    }
+                } catch (error) {
+                    console.error('Password reset error:', error);
+                    showAlert(alertElement, 'حدث خطأ أثناء استعادة كلمة المرور: ' + error.message, 'danger');
+                }
+            });
+        }
+
+        /**
+         * تهيئة نموذج تغيير كلمة المرور
+         */
+        function setupChangePasswordForm() {
+            const form = document.getElementById('changePasswordForm');
+            if (!form) return;
+            
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const userId = document.getElementById('userId').value;
+                const currentPassword = document.getElementById('currentPassword').value;
+                const newPassword = document.getElementById('newPassword').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                const securityAnswer = document.getElementById('changeSecurityAnswer').value;
+                const alertElement = document.getElementById('changePasswordAlert');
+                
+                if (newPassword !== confirmPassword) {
+                    showAlert(alertElement, 'كلمة المرور الجديدة غير متطابقة', 'danger');
+                    return;
+                }
+                
+                try {
+                    const scriptUrl = window.DevCompany?.googleSheets?.formUrls?.loginForm || 
+                                    'https://script.google.com/macros/s/AKfycbwt0BQG5zq4WHOPMbKdEpMgQuWTOUnheDxp9RBZJYd8G4WaNxlbR34CfFiIKypV6P6w/exec';
+                    
+                    const response = await fetch(`${scriptUrl}?action=changePassword&userId=${encodeURIComponent(userId)}&currentPassword=${encodeURIComponent(currentPassword)}&newPassword=${encodeURIComponent(newPassword)}&securityAnswer=${encodeURIComponent(securityAnswer)}`);
+                    
+                    if (!response.ok) {
+                        throw new Error('فشل في الاتصال بالخادم');
+                    }
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        showAlert(alertElement, 'تم تغيير كلمة المرور بنجاح', 'success');
+                        setTimeout(() => {
+                            window.location.href = '../index.html';
+                        }, 2000);
+                    } else {
+                        showAlert(alertElement, data.message || 'فشل في تغيير كلمة المرور', 'danger');
+                    }
+                } catch (error) {
+                    console.error('Password change error:', error);
+                    showAlert(alertElement, 'حدث خطأ أثناء تغيير كلمة المرور: ' + error.message, 'danger');
+                }
+            });
+        }
+
+        /**
+         * تهيئة روابط التبديل بين النماذج
+         */
+        function setupFormLinks() {
+            // رابط "نسيت كلمة المرور"
+            const forgotLink = document.getElementById('forgotPasswordLink');
+            if (forgotLink) {
+                forgotLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.getElementById('loginForm').classList.add('hidden');
+                    document.getElementById('forgotPasswordForm').classList.remove('hidden');
+                    document.getElementById('changePasswordForm').classList.add('hidden');
+                    clearAlerts();
+                });
+            }
+            
+            // رابط "العودة لتسجيل الدخول"
+            const backLink = document.getElementById('backToLoginLink');
+            if (backLink) {
+                backLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.getElementById('loginForm').classList.remove('hidden');
+                    document.getElementById('forgotPasswordForm').classList.add('hidden');
+                    document.getElementById('changePasswordForm').classList.add('hidden');
+                    clearAlerts();
+                });
+            }
+        }
+
+        /**
+         * عرض نموذج تغيير كلمة المرور
+         */
+        function showChangePasswordForm(userId) {
+            const userIdInput = document.getElementById('userId');
+            if (userIdInput) userIdInput.value = userId;
+            
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('forgotPasswordForm').classList.add('hidden');
+            document.getElementById('changePasswordForm').classList.remove('hidden');
+            clearAlerts();
+        }
+
+        /**
+         * عرض رسالة تنبيه
+         */
+        function showAlert(element, message, type) {
+            if (!element) return;
+            
+            element.textContent = message;
+            element.className = 'alert';
+            
+            if (type === 'success') {
+                element.classList.add('alert-success');
+            } else {
+                element.classList.add('alert-danger');
+            }
+            
+            element.classList.remove('hidden');
+        }
+
+        /**
+         * مسح جميع رسائل التنبيه
+         */
+        function clearAlerts() {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                alert.classList.add('hidden');
+            });
+        }
+    </script>
+</body>
+</html>
